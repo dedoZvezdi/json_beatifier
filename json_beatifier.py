@@ -1,7 +1,7 @@
 import json
 import os
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 
 def select_file(title="Select a JSON file"):
     root = tk.Tk()
@@ -35,19 +35,17 @@ def beautify_json(input_path, output_path=None):
         with open(output_path, "w", encoding="utf-8") as outfile:
             json.dump(data, outfile, indent=4, ensure_ascii=False)
         
-        print(f"Formatting successful! Recorded in: {output_path}")
+        messagebox.showinfo("Success", f"Formatting successful! Recorded in: {output_path}")
     except Exception as e:
+        messagebox.showinfo("Error", f"Error: {e}. Exiting...")
         print(f"Error: {e}")
 
 if __name__ == "__main__":
-    print("1. Select an input JSON file:")
     input_path = select_file()
     
     if not input_path:
-        print("No file selected. Exiting...")
+        messagebox.showinfo("Error", "No file selected. Exiting...")
         exit()
-    
-    print("2. Select an output file (or press Cancel to save to the same folder):")
     output_path = select_output_file(default_name="beautified_" + os.path.basename(input_path))
     
     beautify_json(input_path, output_path)
